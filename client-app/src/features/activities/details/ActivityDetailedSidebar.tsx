@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 import { Image, Item, Label, List, Segment } from "semantic-ui-react";
 import { Activity } from "../../../app/models/activity";
+import { observer } from "mobx-react-lite";
 
 interface Props {
     activity: Activity;
 }
 
-export default function ActivityDetailedSidebar({ activity: { attendees, host } }: Props) {
+export default observer(function ActivityDetailedSidebar({ activity: { attendees, host } }: Props) {
 
     if (!attendees) return null;
 
@@ -48,4 +49,4 @@ export default function ActivityDetailedSidebar({ activity: { attendees, host } 
             </Segment>
         </>
     )
-}
+})

@@ -12,8 +12,8 @@ export default observer(function ActivityListItemAttendee({ attendees }: Props) 
     return (
         <List horizontal>
             {attendees.map(attendee => (
-                <Popup key={attendee.username} hoverablekey={attendee.username} trigger={
-                    <List.Item key={attendee.username} as={Link} to={`/profiles/${attendee.username}`}>
+                <Popup key={attendee.username} hoverable trigger={
+                    <List.Item as={Link} to={`/profiles/${attendee.username}`}>
                         <Image size="mini" circular src={attendee.image || "/assets/vite.svg"} />
                     </List.Item>}
                 >

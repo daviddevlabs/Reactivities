@@ -45,4 +45,12 @@ export default class UserStore {
             console.log(error);
         }
     }
+
+    setImage = (image: string) => {
+        if (this.user) this.user.image = image;
+    }
+
+    setDisplayName = (displayName: string) => {
+        if (this.user) this.user.displayName = displayName;
+    }
 }
