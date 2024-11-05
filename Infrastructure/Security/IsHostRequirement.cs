@@ -8,30 +8,23 @@ namespace Infrastructure.Security
 {
     public class IsHostRequirement : IAuthorizationRequirement
     {
-
     }
 
-    public class IsHostRequirementHandler : AuthorizationHandler<IsHostRequirement>
+    public class IsHostRequirementHandler(DataContext dbContext, IHttpContextAccessor httpContextAccessor)
+        : AuthorizationHandler<IsHostRequirement>
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly DataContext _dbContext;
-
-        public IsHostRequirementHandler(DataContext dbContext, IHttpContextAccessor httpContextAccessor)
-        {
-            _dbContext = dbContext;
-            _httpContextAccessor = httpContextAccessor;
-        }
-
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, IsHostRequirement requirement)
         {
             var userId = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             if (userId == null) return Task.CompletedTask;
 
-            var activityId = Guid.Parse(_httpContextAccessor.HttpContext?.Request.RouteValues
+            var activityId = Guid.Parse(httpContextAccessor.HttpContext?.Request.RouteValues
                 .SingleOrDefault(x => x.Key == "id").Value?.ToString());
 
-            var attendee = _dbContext.ActivityAttendees
+            if(activityId == Guid.Empty) return Task.CompletedTask;
+            
+            var attendee = dbContext.ActivityAttendees
                 .AsNoTracking()
                 .SingleOrDefaultAsync(x => x.AppUserId == userId && x.ActivityId == activityId)
                 .Result;

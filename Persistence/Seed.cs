@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Persistence
 {
-    public class Seed
+    public static class Seed
     {
         public static async Task SeedData(DataContext context, UserManager<AppUser> userManager)
         {
@@ -104,7 +104,7 @@ namespace Persistence
 
                 await context.Activities.AddRangeAsync(activities);
                 await context.SaveChangesAsync();
-            };
+            }
         }
     }
 }
