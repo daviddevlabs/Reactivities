@@ -86,13 +86,14 @@ const Activities = {
 const Account = {
     current: () => requests.get<User>("/account"),
     login: (user: UserFormValues) => requests.post<User>("/account/login", user),
-    register: (user: UserFormValues) => requests.post<User>("/account/register", user)
+    register: (user: UserFormValues) => requests.post<User>("/account/register", user),
+    fbLogin: (accessToken : string) => requests.post<User>(`/account/fbLogin?accessToken=${accessToken}`, {}),
 }
 
 const Profiles = {
     get: (username: string) => requests.get<Profile>(`/profiles/${username}`),
     uploadPhoto: (file: Blob) => {
-        let formData = new FormData();
+        const formData = new FormData();
         formData.append("File", file);
         return axios.post<Photo>("photos", formData, {
             headers: { "Content-Type": "multipart/form-data" }
