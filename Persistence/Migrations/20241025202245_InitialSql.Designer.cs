@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence;
 
@@ -11,9 +12,11 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20241025202245_InitialSql")]
+    partial class InitialSql
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -191,33 +194,6 @@ namespace Persistence.Migrations
                     b.HasIndex("AppUserId");
 
                     b.ToTable("Photos");
-                });
-
-            modelBuilder.Entity("Domain.RefreshToken", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AppUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("Expires")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("Revoked")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Token")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
-
-                    b.ToTable("RefreshToken");
                 });
 
             modelBuilder.Entity("Domain.UserFollowing", b =>
@@ -410,15 +386,6 @@ namespace Persistence.Migrations
                         .HasForeignKey("AppUserId");
                 });
 
-            modelBuilder.Entity("Domain.RefreshToken", b =>
-                {
-                    b.HasOne("Domain.AppUser", "AppUser")
-                        .WithMany("RefreshTokens")
-                        .HasForeignKey("AppUserId");
-
-                    b.Navigation("AppUser");
-                });
-
             modelBuilder.Entity("Domain.UserFollowing", b =>
                 {
                     b.HasOne("Domain.AppUser", "Target")
@@ -505,8 +472,6 @@ namespace Persistence.Migrations
                     b.Navigation("Followings");
 
                     b.Navigation("Photos");
-
-                    b.Navigation("RefreshTokens");
                 });
 #pragma warning restore 612, 618
         }
