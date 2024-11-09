@@ -3,6 +3,7 @@ import { User, UserFormValues } from "../models/user";
 import agent from "../api/agent";
 import { store } from "./store";
 import { router } from "../router/Routes";
+import {isAxiosError} from "axios";
 
 export default class UserStore {
     user: User | null = null
@@ -27,12 +28,15 @@ export default class UserStore {
     }
 
     register = async (creds: UserFormValues) => {
-        const user = await agent.Account.register(creds);
-        store.commonStore.setToken(user.token);
-        this.startRefreshTokenTimer(user);
-        runInAction(() => this.user = user);
-        router.navigate("/activities");
-        store.modalStore.closeModel();
+        try {
+            await agent.Account.register(creds);
+            router.navigate(`/account/registerSuccess?email=${creds.email}`);
+            store.modalStore.closeModel();
+        }catch (error) {
+            if(isAxiosError(error) && error?.response?.status === 400) throw error;
+            store.modalStore.closeModel();
+            console.log(500);
+        }
     }
 
     logout = () => {
@@ -92,7 +96,7 @@ export default class UserStore {
     private startRefreshTokenTimer(user: User) {
         const jwtToken = JSON.parse(atob(user.token.split(".")[1]));
         const expires = new Date(jwtToken.exp * 1000);
-        const timeout = expires.getTime() - Date.now() - (30 * 1000);
+        const timeout = expires.getTime() - Date.now() - (60 * 1000);
         this.refreshTokenTimeout = setTimeout(this.refreshToken, timeout);
         console.log({ refreshTokenTimeout: this.refreshTokenTimeout });
     }

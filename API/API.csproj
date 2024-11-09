@@ -23,4 +23,30 @@
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\assets\brand-icons-Cu_C0hZ4.svg" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\brand-icons-F3SPCeH1.woff" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\brand-icons-sqJ2Pg7a.eot" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\brand-icons-ubhWoxly.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\brand-icons-XL9sxUpA.woff2" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\flags-DOLqOU7Y.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\icons-BOCtAERH.woff" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\icons-CHzK1VD9.eot" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\icons-D29ZQHHw.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\icons-Du6TOHnR.woff2" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\icons-RwhydX30.svg" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\index-BaqOJBah.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\index-BcIQNrTs.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\outline-icons-aQ88nltS.woff" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\outline-icons-BfdLr8tr.svg" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\outline-icons-DD8jm0uy.ttf" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\outline-icons-DInHoiqI.woff2" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\outline-icons-LX8adJ4n.eot" />
+    <_ContentIncludedByDefault Remove="wwwroot\assets\vite.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>
