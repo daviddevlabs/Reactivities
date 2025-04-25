@@ -20,19 +20,22 @@ namespace API.Services
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim(ClaimTypes.Email, user.Email),
+                new (ClaimTypes.NameIdentifier, user.Id),
+                new (ClaimTypes.Name, user.UserName!),
+                new (ClaimTypes.Email, user.Email!),
+                new (ClaimTypes.Role, "User")
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["TokenKey"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:Key"]!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
+                Audience = _config["JWT:Audience"],
+                Issuer = _config["JWT:Issuer"],
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddMinutes(10),
-                SigningCredentials = creds,
+                SigningCredentials = creds
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();

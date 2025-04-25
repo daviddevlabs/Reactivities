@@ -19,12 +19,18 @@ export default class UserStore {
     }
 
     login = async (creds: UserFormValues) => {
-        const user = await agent.Account.login(creds);
-        store.commonStore.setToken(user.token);
-        this.startRefreshTokenTimer(user);
-        runInAction(() => this.user = user);
-        router.navigate("/activities");
-        store.modalStore.closeModel();
+        try {
+            const user = await agent.Account.login(creds);
+            store.commonStore.setToken(user.token);
+            this.startRefreshTokenTimer(user);
+            runInAction(() => this.user = user);
+            router.navigate("/activities");
+            store.modalStore.closeModel();
+        }catch (error){
+            if(isAxiosError(error) && error?.response?.data) throw error;
+            store.modalStore.closeModel();
+            console.log(error);
+        }
     }
 
     register = async (creds: UserFormValues) => {

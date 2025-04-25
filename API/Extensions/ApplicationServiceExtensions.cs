@@ -7,6 +7,7 @@ using Infrastructure.Email;
 using Infrastructure.Photos;
 using Infrastructure.Security;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Persistence;
 
 namespace API.Extensions
@@ -16,14 +17,39 @@ namespace API.Extensions
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
         {
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen();
-            services.AddDbContext<DataContext>(opt =>
+            services.AddSwaggerGen(swagger =>
             {
-                opt.UseSqlServer(config.GetConnectionString("DefaultConnection"));
+                swagger.SwaggerDoc("v1", new OpenApiInfo { Version = "v1" });
+                swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header
+                });
+                swagger.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        }, Array.Empty<string>()
+                    }
+                });
             });
-            services.AddCors(opt =>
+
+            services.AddDbContext<DataContext>(options =>
             {
-                opt.AddPolicy("CorsPolicy", policy =>
+                options.UseSqlServer(config.GetConnectionString("DefaultConnection"));
+            });
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", policy =>
                 {
                     policy
                         .AllowAnyMethod()
